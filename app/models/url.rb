@@ -1,5 +1,5 @@
 class Url < ActiveRecord::Base
-  validates :long_url, uniqueness:true
+  validates :long_url, uniqueness:true, format: { with: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix }
 	validates :unique_key, uniqueness: true
   # Remember to create a migration!
   def self.shorten(long_url)
@@ -27,5 +27,8 @@ class Url < ActiveRecord::Base
     list = []
     Url.all.each{|row| list << [row.long_url ,row.unique_key, row.click_count]}
     list
+  end
+
+  def url_validator
   end
 end
