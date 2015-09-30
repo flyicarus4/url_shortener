@@ -4,9 +4,19 @@
 
 <form action="/urls" method="post">
     Enter URL: 
-    <input type ="text" name="long_url">
+    <input type ="text" name="input">
     <input type="submit" value="Submit">
  </form>
+ 	
+<% if @url && @url.errors.any? %>
+
+	<h2> Errors in Input </h2>
+	<ul>
+		<% @url.errors.full_messages.each do |x| %>
+			<li><%= x %></li>
+		<% end %>
+	</ul>
+<% end %>
 
  <p> list of current URLs shortened </p>
  <% @list.each do |x| %> <!-- Or whatever variable you would like to pass -->

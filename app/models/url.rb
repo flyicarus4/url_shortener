@@ -1,15 +1,20 @@
 class Url < ActiveRecord::Base
-  validates :long_url, uniqueness:true, format: { with: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix }
+  validates :long_url, presence: true
+  validates :long_url, uniqueness:true
+  validates :long_url, format: { with: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix ,  message: "The input string is not a valid URL"}
+  validates :long_url, length: { minimum: 4 }
 	validates :unique_key, uniqueness: true
+  before_save :shorten
   # Remember to create a migration!
-  def self.shorten(long_url)
+  def shorten
     #use find_or_initialize to confirm uniqueness of long_url
-  	row = Url.find_or_initialize_by(long_url: long_url)
+  	self.unique_key = generate_unique_key
+    self.click_count = 0
     #update unique key of row
-    row.update(unique_key: generate_unique_key, click_count: 0) if row.unique_key == nil
+    # row.update(unique_key: generate_unique_key, click_count: 0) if row.unique_key == nil
   end
 
-  def self.generate_unique_key
+  def generate_unique_key
   	key = Array.new(6){[*"A".."Z", *"0".."9"].sample}.join
   	while list_all_unique_keys.include?(key)
   		key = Array.new(6){[*"A".."Z", *"0".."9"].sample}.join 		
@@ -29,6 +34,11 @@ class Url < ActiveRecord::Base
     list
   end
 
-  def url_validator
+  def self.validate_input(input)
+    row = Url.new(long_url: input)
+    row.valid?
+    p "[ERROR MESSAGES ON VALIDATION]"
+    p row.errors.messages
+    row.errors.messages
   end
 end

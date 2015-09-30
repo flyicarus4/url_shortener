@@ -1,20 +1,23 @@
 require_relative '../../config/environment'
 
+
 get '/' do
   @list = Url.list
   puts "[LOG] Getting /"
   puts "[LOG] Params: #{params.inspect}"
-  p @list
   erb :index
 end
 
 post '/urls' do
   # create a new Url
-  long_url = params[:long_url]
-  puts "DEBUG: long url is #{params[:long_url]}"
-  Url.shorten(long_url)
-  unique_key = Url.find_by(long_url: long_url).unique_key
-  redirect to("/")
+  @url = Url.find_or_initialize_by(long_url: params[:input])
+  if @url.save
+    redirect to '/'
+  else
+    @list = Url.list
+    erb :index
+  end
+
 end
 
   # i.e. /q6bda
