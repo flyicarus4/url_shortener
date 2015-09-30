@@ -2,8 +2,14 @@
 
 <p>Input URL link to shorten.</p>
 
-<form action="#" method="">
+<form action="/urls" method="post">
     Enter URL: 
     <input type ="text" name="long_url">
     <input type="submit" value="Submit">
  </form>
+
+ <p> list of current URLs shortened </p>
+ <% @list.each do |x| %> <!-- Or whatever variable you would like to pass -->
+    <p>Original Url: <a href="<%= x[0] %>"><%= x[0] %></a></p>
+    <p>Short Url: <a href="<%= x[1]%>"><%= x[1]%></a></p>
+ <% end %>
