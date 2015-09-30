@@ -6,7 +6,7 @@ class Url < ActiveRecord::Base
     #use find_or_initialize to confirm uniqueness of long_url
   	row = Url.find_or_initialize_by(long_url: long_url)
     #update unique key of row
-    row.update(unique_key: generate_unique_key, click_count: 0)
+    row.update(unique_key: generate_unique_key, click_count: 0) if row.unique_key == nil
   end
 
   def self.generate_unique_key
