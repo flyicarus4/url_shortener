@@ -12,4 +12,5 @@
  <% @list.each do |x| %> <!-- Or whatever variable you would like to pass -->
     <p>Original Url: <a href="<%= x[0] %>"><%= x[0] %></a></p>
     <p>Short Url: <a href="<%= x[1]%>"><%= x[1]%></a></p>
+    <p>Click Count: <%= x[2]%></p>
  <% end %>

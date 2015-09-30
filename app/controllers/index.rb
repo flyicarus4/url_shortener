@@ -4,6 +4,7 @@ get '/' do
   @list = Url.list
   puts "[LOG] Getting /"
   puts "[LOG] Params: #{params.inspect}"
+  p @list
   erb :index
 end
 
@@ -19,6 +20,8 @@ end
   # i.e. /q6bda
 get '/:unique_key' do
   # redirect to appropriate "long" URL
-  long_url = Url.find_by(unique_key: params[:unique_key]).long_url
-  redirect to("#{long_url}")
+  long = Url.find_by(unique_key: params[:unique_key])
+  long.click_count += 1
+  long.save
+  redirect to("#{long.long_url}")
 end
