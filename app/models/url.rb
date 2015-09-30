@@ -22,7 +22,7 @@ class Url < ActiveRecord::Base
   	key 
   end
 
-  def self.list_all_unique_keys
+  def list_all_unique_keys
   	list = []
   	Url.all.each{|row| list << row.unique_key}
   	list
